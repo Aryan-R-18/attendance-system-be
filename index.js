@@ -24,21 +24,23 @@ connectDB();
 const app = express();
 
 // --- Middlewares ---
-app.use(cors()); 
+app.use(cors({
+  origin: "https://attendancemanage.vercel.app", // ✅ allow only your frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json({ extended: false }));
 
-app.use('/api/auth', require('./routes/authRoutes'));
-
-app.get('/', (req, res) => res.send('Attendance API Running'));
-
 // --- Define API Routes ---
+app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/sections', require('./routes/sectionRoutes'));
 app.use('/api/attendance', require('./routes/attendanceRoutes'));
-// Add the new student routes
 app.use('/api/students', require('./routes/studentRoutes'));
 
+// --- Root Route ---
+app.get('/', (req, res) => res.send('Attendance API Running'));
 
-// --- Server Listener ---
+// --- Server Listener (only used in local dev, not Vercel) ---
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
