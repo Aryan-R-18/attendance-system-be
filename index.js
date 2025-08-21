@@ -25,10 +25,15 @@ const app = express();
 
 // --- Middlewares ---
 app.use(cors({
-  origin: "https://attendancemanage.vercel.app", // ✅ allow only your frontend
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  origin: "https://attendancemanage.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // 👈 added OPTIONS
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 }));
+
+// Handle preflight explicitly (important on Vercel)
+app.options("*", cors());
+
 
 app.use(express.json({ extended: false }));
 
