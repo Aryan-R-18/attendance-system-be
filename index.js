@@ -25,16 +25,14 @@ const app = express();
 
 // --- CORS Configuration ---
 const corsOptions = {
-  origin: "https://attendancemanage.vercel.app", // ✅ only allow your frontend
+  origin: "*",  // 👈 allow all origins temporarily
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
 };
 
 app.use(cors(corsOptions));
-
-// Handle preflight requests globally
 app.options("*", cors(corsOptions));
+
 
 // --- Body Parser ---
 app.use(express.json({ extended: false }));
